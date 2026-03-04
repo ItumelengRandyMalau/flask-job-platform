@@ -42,3 +42,14 @@ class UserCourseProgress(Document):
     course = ReferenceField(Course)
     progress = DecimalField(min_value=0, max_value=100)
 
+    # Defining UserCourseProgress model
+class UserCourseProgress(Document):
+    user = ReferenceField(User)
+    course = ReferenceField(Course)
+    progress = DecimalField(min_value=0, max_value=100)
+
+# Creating Application model
+class Application(Document):
+    user = ReferenceField(User)
+    job = ReferenceField(JobPost)
+    applied_at = DateTimeField(default=datetime.utcnow)

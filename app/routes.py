@@ -72,6 +72,12 @@ def apply_job(job_id):
         return redirect(url_for('job_listings'))
     return 'Job not found', 404
 
+# Route to view a specific job post
+@app.route('/job/<job_id>')
+def job_detail(job_id):
+    job = mongo.db.jobs.find_one({'_id': ObjectId(job_id)})
+    return render_template('job_list.html', job=job)
+
 # Mentorship route
 @app.route('/mentors')
 def mentors():
