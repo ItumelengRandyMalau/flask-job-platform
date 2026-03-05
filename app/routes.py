@@ -11,7 +11,7 @@ login_manager = LoginManager()
 def index():
     if not current_user.is_authenticated:
         return redirect(url_for('login'))
-    return render_template('index1.html')
+    return render_template('index.html')
 
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -126,3 +126,33 @@ def find_job():
 def employer():
     return render_template('employer.html')  # Ensure 'employer.html' exists
 
+/*# Route for the home page (show job listings)
+@app.route('/')
+def index():
+    jobs = mongo.db.jobs.find()  # Get all job posts
+    return render_template('index.html', jobs=jobs)
+
+# Route for posting a new job
+@app.route('/post_job', methods=['GET', 'POST'])
+def post_job():
+    if request.method == 'POST':
+        job_title = request.form['title']
+        company = request.form['company']
+        description = request.form['description']
+        
+        
+        # Insert new job into the database
+        mongo.db.jobs.insert_one({
+            'title': job_title,
+            'company': company,
+            'description': description
+        })
+        return redirect(url_for('index'))
+    
+    return render_template('post_job.html')
+
+# Route to view a specific job post
+@app.route('/job/<job_id>')
+def job_detail(job_id):
+    job = mongo.db.jobs.find_one({'_id': ObjectId(job_id)})
+    return render_template('job_list.html', job=job)*/

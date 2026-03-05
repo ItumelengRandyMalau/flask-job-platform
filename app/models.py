@@ -1,5 +1,6 @@
 from mongoengine import Document, StringField, BooleanField, EmailField, ListField, URLField, DecimalField, ReferenceField, DateTimeField, IntField
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin
 
 class User(Document):
     username = StringField(required=True, unique=True)
