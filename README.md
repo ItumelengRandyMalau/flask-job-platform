@@ -1,34 +1,3 @@
-# JobHubSA – Job Recruitment Platform
-
-JobHubSA is a web platform designed to connect job seekers with employment opportunities, mentorship, and professional development resources. The platform was created to explore ways technology can help address youth unemployment by providing access to jobs, learning resources, and career guidance.
-
-## Features
-
-- User registration and authentication
-- Job listing and job application functionality
-- Job filtering by category and location
-- Mentor discovery for career guidance
-- Course discovery for professional development
-- User profile management
-
-## Tech Stack
-
-Backend
-- Python
-- Flask
-
-Database
-- MongoDB
-- MongoEngine
-
-Frontend
-- HTML
-- CSS
-- JavaScript
-- Bootstrap
-- jQuery
-
-## Project Structure
 
 # JobHubSA – Job Recruitment Platform
 
