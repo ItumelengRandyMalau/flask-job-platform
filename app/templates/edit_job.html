@@ -1,0 +1,19 @@
+<h2>Edit Job</h2>
+
+<form method="POST">
+
+<label>Title</label>
+<input type="text" name="title" value="{{ job.title }}">
+
+<label>Company</label>
+<input type="text" name="company" value="{{ job.company }}">
+
+<label>Location</label>
+<input type="text" name="location" value="{{ job.location }}">
+
+<label>Description</label>
+<textarea name="description">{{ job.description }}</textarea>
+
+<button type="submit">Update Job</button>
+
+</form>

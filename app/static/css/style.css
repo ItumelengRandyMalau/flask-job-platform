@@ -346,7 +346,7 @@ section #image_box .image-container img {
  #login_sin_row {
     position: relative;
     overflow-y: none;
-   background-image: url("images/login_f_pic.jpg");
+   background-image: url("../images/login_f_pic.jpg");
    background-attachment: fixed;
    height: 100%;
    background-position: center;

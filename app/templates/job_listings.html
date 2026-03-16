@@ -1,4 +1,17 @@
 <!-- job_listings.html -->
+
+<h2>Available Jobs</h2>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+    {% for category, message in messages %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+{% endwith %}
+
 <form action="/jobs" method="get">
     <input type="text" name="location" placeholder="Filter by location">
     <input type="text" name="category" placeholder="Filter by category">
@@ -6,16 +19,37 @@
 </form>
 
 <ul>
-    {% for job in jobs %}
-    <li>
-        <strong>{{ job.title }}</strong> - {{ job.company }}<br>
-        Location: {{ job.location }} | Salary: {{ job.salary }}<br>
-        {{ job.description }}<br>
-        <!-- Apply form using POST method -->
-        <form action="/apply/{{ job.id }}" method="post">
-            <button type="submit">Apply</button>
-        </form>
-    </li>
-    {% endfor %}
+{% for job in jobs %}
+<li>
+
+<strong>
+<a href="{{ url_for('job_detail', job_id=job.id) }}" style="text-decoration:none;">
+{{ job.title }}
+</a>
+</strong> - {{ job.company }}<br>
+
+Location: {{ job.location }} | Salary: {{ job.salary }}<br>
+
+{{ job.description }}<br>
+
+<a href="{{ url_for('edit_job', job_id=job.id) }}" style="text-decoration: none;">Edit Job</a>
+
+<form action="/apply/{{ job.id }}" method="post">
+<button type="submit">Apply</button>
+</form>
+
+</li>
+{% endfor %}
 </ul>
 
+<div class="mt-4">
+
+<a href="?page={{ request.args.get('page',1)|int - 1 }}" class="btn btn-secondary">
+Previous
+</a>
+
+<a href="?page={{ request.args.get('page',1)|int + 1 }}" class="btn btn-secondary">
+Next
+</a>
+
+</div>

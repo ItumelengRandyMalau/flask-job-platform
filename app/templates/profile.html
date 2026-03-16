@@ -5,3 +5,4 @@
 <p>Portfolio: <a href="{{ user.portfolio }}" target="_blank">View Portfolio</a></p>
 <p>Courses Completed: {{ user.courses_completed | join(', ') }}</p>
 <p>Reviews: {{ user.reviews | join(', ') }}</p>
+<a href="{{url_for('mentors')}}">Request for a mentor</a> <style text decoration="none"></style>
