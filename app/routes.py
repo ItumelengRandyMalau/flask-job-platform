@@ -3,28 +3,64 @@ from flask_login import login_user, logout_user, current_user, login_required
 from . import app
 from .models import User, JobPost, Application, Course, UserCourseProgress
 from datetime import datetime
-
+from decimal import Decimal, InvalidOperation
+from flask import abort
 
 @app.route('/')
 def index():
-    """if not current_user.is_authenticated:
-     return redirect(url_for('login'))
-    return render_template('index.html')"""
-    return render_template("index.html")
 
+    if current_user.is_authenticated:
+
+        if current_user.role == "employer":
+            return redirect(url_for('dashboard'))
+
+        elif current_user.role == "mentor":
+            return redirect(url_for('mentors'))
+
+        else:
+            return redirect(url_for('job_listings'))
+
+    return render_template('index.html')
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
         data = request.form
+
+        password = data['password']
+        confirm_password = data['confirm_password']
+
+        # PASSWORD CHECK
+        if password != confirm_password:
+            flash("Passwords do not match", "danger")
+            return redirect(url_for('signup'))
+
         try:
-            user = User(username=data['username'], email=data['email'])
-            user.set_password(data['password'])
+            user = User(
+                username=data['username'],
+                email=data['email'],
+                role="jobseeker",
+                company=data['company'],
+                location=data['location'],
+                cellphone=data['cellphone']
+            )
+
+            user.set_password(password)
             user.save()
+
             login_user(user)
-            return redirect(url_for('profile'))
+
+            if user.role == "employer":
+                return redirect(url_for('dashboard'))
+
+            elif user.role == "mentor":
+                return redirect(url_for('mentors'))
+
+            else:
+                return redirect(url_for('job_listings'))
+
         except Exception as e:
-            flash("An error occurred while creating your account.")
+            flash("An error occurred while creating your account.", "danger")
             print(e)
 
     return render_template('signup.html', user=current_user)
@@ -37,7 +73,14 @@ def login():
 
         if user and user.check_password(request.form['password']):
             login_user(user)
-            return redirect(url_for('profile'))
+            if user.role == "employer":
+                return redirect(url_for('dashboard'))
+            
+            elif user.role == "mentor":
+                return redirect(url_for('mentors'))
+
+            else:
+                return redirect(url_for('profile'))
 
         flash("Invalid login details.")
 
@@ -78,6 +121,9 @@ def job_listings():
 @login_required
 def apply_job(job_id):
 
+    if current_user.role != "job_seeker":
+        abort(403) 
+
     job = JobPost.objects(id=job_id).first()
 
     if job:
@@ -103,9 +149,41 @@ def courses():
 
     return render_template('courses.html', courses=courses, user=current_user)
 
-@app.route('/employer')
+@app.route('/employer', methods=['GET', 'POST'])
 def employer():
-    return render_template("employer.html")
+
+    if request.method == 'POST':
+
+        password = request.form['password']
+        confirm_password = request.form['confirm_password']
+
+        # PASSWORD VALIDATION
+        if password != confirm_password:
+            flash("Passwords do not match", "danger")
+            return redirect(url_for('employer'))
+
+        try:
+            user = User(
+                username=request.form['fullname'],
+                email=request.form['email'],
+                role="employer",
+                company=request.form['company'],
+                cellphone=request.form['cellphone'],
+                location=request.form['location']
+            )
+
+            user.set_password(password)
+            user.save()
+
+            login_user(user)
+
+            return redirect(url_for('dashboard'))
+
+        except Exception as e:
+            flash("Error creating employer account", "danger")
+            print(e)
+
+    return render_template('employer.html')
 
 @app.route("/about")
 def about():
@@ -113,52 +191,67 @@ def about():
 
 @app.route('/mentors')
 def mentors():
-    return render_template("mentors.html")
+
+    mentors = User.objects(role="mentor")
+
+    return render_template('mentors.html', mentors=mentors)
 
 @app.route('/dashboard')
+@login_required
 def dashboard():
 
-    if not current_user.is_authenticated:
-        return redirect(url_for('login'))
+    if current_user.role != "employer":
+        abort(403)
 
-    jobs = JobPost.objects(employer=current_user)
+    if current_user.role == "job_seeker":
+        return redirect(url_for('profile'))
+
+    jobs = JobPost.objects(employer=current_user._get_current_object()
+    )
 
     return render_template('dashboard.html', jobs=jobs)
 
 @app.route('/post_job', methods=['GET', 'POST'])
+@login_required
 def post_job():
+
+    if current_user.role != "employer":
+        abort(403)
 
     if request.method == 'POST':
 
-        title = request.form['title']
-        company = request.form['company']
-        location = request.form['location']
-        description = request.form['description']
-        category = request.form['category']
-        salary = request.form['salary']
-
         job = JobPost(
-            title=title,
-            company=company,
-            location=location,
+            title=request.form['title'],
+            company=request.form['company'],
+            location=request.form['location'],
+            description=request.form['description'],
             category=request.form['category'],
-            description=description,
-            salary=request.form['salary'],
-            employer=current_user
+            salary=request.form.get('salary'),
+
+            employer=current_user._get_current_object() 
         )
 
         job.save()
-        flash("Job posted successfully!", "success")
 
-        return redirect(url_for('job_listings'))
+        flash("Job posted successfully", "success")
+        return redirect(url_for('dashboard'))
 
     return render_template('post_job.html')
 
 @app.route('/edit_job/<job_id>', methods=['GET', 'POST'])
+@login_required
 def edit_job(job_id):
+
+    if current_user.role != "employer":
+        abort(403)
+
     job = JobPost.objects(id=job_id).first()
-    if job.employer != current_user:
-        return redirect(url_for('job_listings'))
+
+    if not job:
+        abort(404)
+
+    if job.employer != current_user._get_current_object():
+        abort(403)
 
     if request.method == 'POST':
 
@@ -168,12 +261,33 @@ def edit_job(job_id):
         job.description = request.form['description']
 
         job.save()
-        flash("Job updated successfully!", "success")
-        
 
-        return redirect(url_for('job_listings'))
+        flash("Job updated successfully!", "success")
+        return redirect(url_for('dashboard'))
 
     return render_template('edit_job.html', job=job)
+
+@app.route('/delete_job/<job_id>', methods=['POST'])
+@login_required
+def delete_job(job_id):
+
+    if current_user.role != "employer":
+        abort(403)
+
+    job = JobPost.objects(id=job_id).first()
+
+    if not job:
+        flash("Job not found", "danger")
+        return redirect(url_for('dashboard'))
+
+    # ensure employer owns the job
+    if job.employer != current_user._get_current_object():
+        abort(403)
+
+    job.delete()
+
+    flash("Job deleted successfully", "success")
+    return redirect(url_for('dashboard'))
 
 @app.route('/job_applications/<job_id>')
 def job_applications(job_id):
@@ -183,3 +297,32 @@ def job_applications(job_id):
     applications = Application.objects(job=job)
 
     return render_template('applications.html', job=job, applications=applications)
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
+
+@app.route('/job/<job_id>/applications')
+@login_required
+def view_applications(job_id):
+
+    if current_user.role != "employer":
+        abort(403)
+
+    job = JobPost.objects(id=job_id).first()
+
+    if not job:
+        abort(404)
+
+    if job.employer != current_user:
+        abort(403)
+
+    applications = Application.objects(job=job)
+
+    return render_template(
+        'applications.html',
+        job=job,
+        applications=applications
+    )

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}
+Applications
+{% endblock %}
+
+{% block content %}
+
+<h2>Applicants for: {{ job.title }}</h2>
+
+<hr>
+
+{% if applications %}
+
+    {% for app in applications %}
+
+        <div class="card mb-3">
+            <div class="card-body">
+
+                <h5>{{ app.user.username }}</h5>
+                <p>{{ app.user.email }}</p>
+
+                <p class="text-muted">
+                    Applied on {{ app.applied_at.strftime('%Y-%m-%d') }}
+                </p>
+
+            </div>
+        </div>
+
+    {% endfor %}
+
+{% else %}
+
+    <p>No applications yet.</p>
+
+{% endif %}
+
+{% endblock %}

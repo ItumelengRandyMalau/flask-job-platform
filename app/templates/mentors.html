@@ -1,10 +1,21 @@
-<!-- mentors.html -->
-<ul>
-    {% for mentor in mentors %}
-    <li>
-        <strong>{{ mentor.username }}</strong><br>
-        {{ mentor.mentor_bio }}<br>
-        <a href="mailto:{{ mentor.email }}">Request Mentorship</a>
-    </li>
-    {% endfor %}
-</ul>
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Mentors</h2>
+
+{% for mentor in mentors %}
+
+<div class="card mb-3">
+    <div class="card-body">
+
+        <h5>{{ mentor.username }}</h5>
+
+        <p>{{ mentor.bio }}</p>
+
+    </div>
+</div>
+
+{% endfor %}
+
+{% endblock %}

@@ -1,19 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}
+Edit Job
+{% endblock %}
+
+{% block content %}
+
 <h2>Edit Job</h2>
 
 <form method="POST">
 
 <label>Title</label>
-<input type="text" name="title" value="{{ job.title }}">
+<input class="form-control" type="text" name="title" value="{{ job.title }}" required>
 
 <label>Company</label>
-<input type="text" name="company" value="{{ job.company }}">
+<input class="form-control" type="text" name="company" value="{{ job.company }}" required>
 
 <label>Location</label>
-<input type="text" name="location" value="{{ job.location }}">
+<input class="form-control" type="text" name="location" value="{{ job.location }}" required>
 
 <label>Description</label>
-<textarea name="description">{{ job.description }}</textarea>
+<textarea class="form-control" name="description" required>{{ job.description }}</textarea>
 
-<button type="submit">Update Job</button>
+<br>
+
+<button class="btn btn-primary" type="submit">
+    Update Job
+</button>
+
+<a class="btn btn-secondary" href="{{ url_for('dashboard') }}">
+    Cancel
+</a>
 
 </form>
+{% endblock %}

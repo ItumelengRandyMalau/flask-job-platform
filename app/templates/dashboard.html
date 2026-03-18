@@ -1,3 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block content %}
+
 <h2>My Jobs</h2>
 
 <a href="{{ url_for('post_job') }}">Post New Job</a>
@@ -6,18 +14,32 @@
 
 {% for job in jobs %}
 
-<div class="job-card">
+<div class="card mb-3">
+    <div class="card-body">
 
-    <h3>{{ job.title }}</h3>
+        <h5>{{ job.title }}</h5>
+        <p>{{ job.company }} - {{ job.location }}</p>
 
-    <p>{{ job.company }} - {{ job.location }}</p>
+        {% if job.created_at %}
+            <p class="text-muted">
+                Posted on {{ job.created_at.strftime('%d %b %Y') }}
+            </p>
+        {% endif %}
 
-    <a href="{{ url_for('edit_job', job_id=job.id) }}">Edit</a>
+        <a class="btn btn-sm btn-warning" href="{{ url_for('edit_job', job_id=job.id) }}">
+            Edit
+        </a>
 
-    <form action="{{ url_for('delete_job', job_id=job.id) }}" method="POST">
-        <button type="submit">Delete</button>
-    </form>
+        <form action="{{ url_for('delete_job', job_id=job.id) }}" method="POST" style="display:inline;">
+            <button class="btn btn-sm btn-danger">Delete</button>
+        </form>
 
+        <a href="{{ url_for('view_applications', job_id=job.id) }}">
+            View Applicants
+        </a>
+
+    </div>
 </div>
 
 {% endfor %}
+{% endblock%}

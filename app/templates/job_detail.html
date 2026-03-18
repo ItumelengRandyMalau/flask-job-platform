@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>{{ job.title }}</h2>
+
+<p><strong>{{ job.company }}</strong></p>
+<p>{{ job.location }}</p>
+
+<hr>
+
+<p>{{ job.description }}</p>
+
+{% if current_user.is_authenticated and current_user.role == "job_seeker" %}
+    <form method="POST" action="{{ url_for('apply', job_id=job.id) }}">
+        <button type="submit">Apply</button>
+    </form>
+{% endif %}
+
+{% endblock %}

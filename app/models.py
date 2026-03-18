@@ -2,21 +2,38 @@ from mongoengine import Document, StringField, BooleanField, EmailField, ListFie
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from flask_login import UserMixin
-from . import connect.db
+from mongoengine import (
+    Document,
+    StringField,
+    BooleanField,
+    EmailField,
+    ListField,
+    URLField,
+    DecimalField,
+    ReferenceField,
+    DateTimeField,
+    IntField
+)
 
 class User(UserMixin, Document):
-    username = db.StringField(required=True, unique=True)
-    email = db.EmailField(required=True, unique=True)
-    password = db.StringField(required=True)
-    is_admin = db.BooleanField(default=False)
+    username = StringField(required=True, unique=True)
+    email = EmailField(required=True, unique=True)
+    password = StringField(required=True)
+    role = StringField(default="job_seeker")
+    company = StringField()
+    location = StringField()
+    cellphone = StringField()
+    is_admin = BooleanField(default=False)
+    is_employer = BooleanField(default=False)
+    is_mentor = BooleanField(default=False)
+    is_job_seeker = BooleanField(default=True )
+    skills = ListField(StringField())
+    portfolio = URLField()
+    courses_completed = ListField(StringField())
+    reviews = ListField(StringField())
 
-    skills = db.ListField(StringField())
-    portfolio = db.URLField()
-    courses_completed = db.ListField(StringField())
-    reviews = db.ListField(StringField())
-
-    is_mentor = Bdb.ooleanField(default=False)
-    mentor_bio = db.StringField()
+    is_mentor = BooleanField(default=False)
+    mentor_bio = StringField()
 
     def set_password(self, password):
         self.password = generate_password_hash(password)
@@ -25,14 +42,16 @@ class User(UserMixin, Document):
         return check_password_hash(self.password, password)
 
 
-class JobPost(db.Document):
-    title = db.StringField(required=True)
-    company = db.StringField(required=True)
-    location = db.StringField(required=True)
-    category = db.StringField(required=True)
-    description = db.StringField()
-    salary = db.DecimalField()
-    employer = db.ReferenceField(User)
+class JobPost(Document):
+    title = StringField(required=True)
+    company = StringField(required=True)
+    location = StringField(required=True)
+    category = StringField(required=True)
+    description = StringField()
+    salary = DecimalField()
+    employer = ReferenceField(User)
+    created_at = DateTimeField(default=datetime.utcnow)
+
 
 
 class Application(Document):

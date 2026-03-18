@@ -1,112 +1,115 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/all.css') }}">
-    <title>login</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
-</head>
-<body>
-    <div id="login_sin_row" class="row"> <!-------------LOgin form--------------------->
-        <div id="form_pic" class="col-lg-6 col-md-12">
-          <!--  <h1>Hello</h1>
-            <div class="pic_container">
-                <img src="images/login_f_pic.jpg" alt="image">
-            </div> -->
-           <div class="text" style="display: block;
-                                    justify-content:center;
-                                    align-items:center;
-           ">
-                <h1 style="
-                font-weight: 900; 
-                color:rgb(141, 164, 184);
-                font-size:50px
-                
-                ">
-                    JOIN OUR
-                    COMMUNITY
-                </h1>
-                <h4 style="
-                font-weight: 400; 
-                
-                ">
-                    JOBHUBSA has thousands of job seekers looking for entry-level jobs - from waiters, cashiers,
-                    cleaners, drivers and factory workers on a permanent basis to general helpers,
-                    marshals and barmen for a once-off event.
-                </h4>
-           </div>
-        
+{% extends "base.html" %}
+
+{% block title %}
+Employer Signup
+{% endblock %}
+
+{% block content %}
+
+<div id="login_sin_row" class="row">
+
+    <div id="form_pic" class="col-lg-6 col-md-12">
+
+        <div class="text">
+
+            <h1 style="font-weight:900;color:rgb(141,164,184);font-size:50px">
+                JOIN OUR COMMUNITY
+            </h1>
+
+            <h4>
+                JOBHUBSA has thousands of job seekers looking for entry-level jobs –
+                from waiters, cashiers, cleaners, drivers and factory workers
+                to event helpers and barmen.
+            </h4>
+
         </div>
 
-        <div id="sign_up" class="col-lg-6 col-md-12">
-            <!-- Sign_UP -->
-            <div class="container">
-                <div id="content1" class="content">
-                    <h2>JOBHUBSA</h2>
-                    <div class="employe_yer_links">
-                        <h4 class="seeker"><a href="{{ url_for('signup') }}">Job Seekers</a></h4>
-                        <h4 class="employer"><a href="{{url_for('employer') }}">Employers</a></h4>
-
-                    </div>
-                    <div class="form-container">
-                        <form method="POST" action="{{ url_for('employer') }}"></form>
-                            <!-- <?php include('errors.php'); ?> -->
-                            <div class="input-cnt">
-                            <i id="name" class="fas fa-user"></i>
-                            <input type="text" name="username" placeholder="Company Name" required>
-                            </div>
-
-                            <div class="input-cnt">
-                                <i id="name" class="fas fa-user"></i>
-                                <input type="text" name="username" placeholder="Name and Surname" required>
-                            </div>
-
-                            <div class="input-cnt">
-                                <i id="name" class="fas fa-phone"></i>
-                                <input type="text" placeholder="Phone Number"  name="cellphone" >
-                            </div>
-            
-                            <div class="input-cnt">
-                            <i id="name" class="fas fa-envelope"></i>
-                            <input type="text" name="Email" placeholder="Email" required>
-                            </div>
-            
-                            <div class="input-cnt">
-                                <i id="password" class="fas fa-envelope"></i>
-                                <input class="password" type="password" name="password" placeholder="Password" required>
-                            </div>
-
-                            <div class="input-cnt">
-                                <i id="password" class="fas fa-envelope"></i>
-                                <input class="password" type="password" name="password" placeholder="Confirm password" required>
-                            </div>
-            
-                            <div class="input-cnt">
-                                <i id="name" class="fas fa-user"></i>
-                                <input type="text" name="Location" placeholder="Location" required>
-                            </div>
-            
-                            <div class="input-cnt">
-                            <input onclick="update()" type="submit" />
-                            </div>
-                        
-                        </form>
-                    </div>    
-                </div>
-                <div class="login_text">
-                  <div style="font-size: small;">Already have an account?</div><a style="font-size:large; padding:10px;" href="{{ url_for('login') }}">Log in</a>
-                </div> 
-            </div>
-        </div>
     </div>
-<script src="{{ url_for('static', filename='js/employer_employe_forms.js') }}"></script>
-<script src="{{ url_for('static', filename='bootstrap/js/jquery.min.js') }}"></script>
-<script src="{{ url_for('static', filename='popper/popper.min.js') }}"></script>
-<script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
-<script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.js') }}"></script>
-</body>
-</html>
+
+
+    <div id="sign_up" class="col-lg-6 col-md-12">
+
+        <div class="container">
+
+            <div id="content1" class="content">
+
+                <h2>JOBHUBSA</h2>
+
+                <div class="employe_yer_links">
+
+                    <h4 class="seeker">
+                        <a href="{{ url_for('signup') }}">Job Seekers</a>
+                    </h4>
+
+                    <h4 class="employer">
+                        <a href="{{ url_for('employer') }}">Employers</a>
+                    </h4>
+
+                </div>
+
+
+                <div class="form-container">
+
+                    <form method="POST" action="{{ url_for('employer') }}">
+
+                        <div class="input-cnt">
+                            <i class="fas fa-building"></i>
+                            <input type="text" name="company" placeholder="Company Name" required>
+                        </div>
+
+                        <div class="input-cnt">
+                            <i class="fas fa-user"></i>
+                            <input type="text" name="fullname" placeholder="Name and Surname" required>
+                        </div>
+
+                        <div class="input-cnt">
+                            <i class="fas fa-phone"></i>
+                            <input type="text" name="cellphone" placeholder="Phone Number">
+                        </div>
+
+                        <div class="input-cnt">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" name="email" placeholder="Email" required>
+                        </div>
+
+                        <div class="input-cnt">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" name="password" placeholder="Password" required>
+                        </div>
+
+                        <div class="input-cnt">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+                        </div>
+
+                        <div class="input-cnt">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <input type="text" name="location" placeholder="Location" required>
+                        </div>
+
+                        <div class="input-cnt">
+                            <input onclick="update()" type="submit" value="Register Employer">
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+
+            <div class="login_text">
+                <div style="font-size:small;">Already have an account?</div>
+
+                <a style="font-size:large;padding:10px;" href="{{ url_for('login') }}">
+                    Log in
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

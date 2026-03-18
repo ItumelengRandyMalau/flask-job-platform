@@ -1,4 +1,12 @@
 <!-- job_listings.html -->
+{% extends "base.html" %}
+
+{% block title %}
+Job Listings
+{% endblock %}
+
+{% block content %}
+
 
 <h2>Available Jobs</h2>
 
@@ -22,6 +30,11 @@
 {% for job in jobs %}
 <li>
 
+  {% if job.created_at %}
+            <p class="text-muted">
+                Posted on {{ job.created_at.strftime('%d %b %Y') }}
+            </p>
+    {% endif %}
 <strong>
 <a href="{{ url_for('job_detail', job_id=job.id) }}" style="text-decoration:none;">
 {{ job.title }}
@@ -32,11 +45,15 @@ Location: {{ job.location }} | Salary: {{ job.salary }}<br>
 
 {{ job.description }}<br>
 
-<a href="{{ url_for('edit_job', job_id=job.id) }}" style="text-decoration: none;">Edit Job</a>
+<a href="{{ url_for('job_detail', job_id=job.id) }}">
+    View Details
+</a>
 
-<form action="/apply/{{ job.id }}" method="post">
-<button type="submit">Apply</button>
-</form>
+{% if current_user.role == "job_seeker" %}
+    <form action="{{ url_for('apply_job', job_id=job.id) }}" method="POST">
+        <button type="submit">Apply</button>
+    </form>
+{% endif %}
 
 </li>
 {% endfor %}
@@ -53,3 +70,4 @@ Next
 </a>
 
 </div>
+{% endblock %}
