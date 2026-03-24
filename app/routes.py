@@ -5,21 +5,11 @@ from .models import User, JobPost, Application, Course, UserCourseProgress
 from datetime import datetime
 from decimal import Decimal, InvalidOperation
 from flask import abort
+from flask import send_file
+import io
 
 @app.route('/')
 def index():
-
-    if current_user.is_authenticated:
-
-        if current_user.role == "employer":
-            return redirect(url_for('dashboard'))
-
-        elif current_user.role == "mentor":
-            return redirect(url_for('mentors'))
-
-        else:
-            return redirect(url_for('job_listings'))
-
     return render_template('index.html')
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -39,7 +29,7 @@ def signup():
             user = User(
                 username=data['username'],
                 email=data['email'],
-                role="jobseeker",
+                role="job_seeker",
                 company=data['company'],
                 location=data['location'],
                 cellphone=data['cellphone']
@@ -80,7 +70,7 @@ def login():
                 return redirect(url_for('mentors'))
 
             else:
-                return redirect(url_for('profile'))
+                return redirect(url_for('job_listings'))
 
         flash("Invalid login details.")
 
@@ -117,21 +107,54 @@ def job_listings():
     return render_template('job_listings.html', jobs=jobs, user=current_user)
 
 
-@app.route('/apply/<job_id>', methods=['POST'])
+@app.route('/apply/<job_id>', methods=['GET', 'POST'])
 @login_required
-def apply_job(job_id):
-
-    if current_user.role != "job_seeker":
-        abort(403) 
-
+def apply(job_id):
     job = JobPost.objects(id=job_id).first()
 
-    if job:
-        application = Application(user=current_user, job=job)
-        application.save()
-        flash("Application submitted successfully!", "success")
+    if current_user.role != "job_seeker":
+        flash("Only job seekers can apply", "danger")
+        return redirect(url_for('index'))
 
-    return redirect(url_for('job_listings'))
+    if request.method == 'POST':
+        file = request.files.get('cv')
+
+        if not file or file.filename == '':
+            flash("Please upload your CV", "danger")
+            return redirect(request.url)
+
+        # Check if already applied
+        existing = Application.objects(job=job, user=current_user).first()
+        if existing:
+            flash("You already applied for this job", "warning")
+            return redirect(url_for('job_listings'))
+
+        # Create application
+        application = Application(
+            job=job,
+            user=current_user._get_current_object()
+        )
+
+        # file handling
+        application.cv = file
+
+        application.save()
+
+        flash("Application submitted successfully!", "success")
+        return redirect(url_for('job_listings'))
+
+    return render_template('apply.html', job=job)
+
+@app.route('/view_cv/<app_id>')
+@login_required
+def view_cv(app_id):
+    app = Application.objects(id=app_id).first()
+
+    return send_file(
+        io.BytesIO(app.cv.read()),
+        download_name=app.cv.filename,
+        as_attachment=False
+    )
 
 
 @app.route('/job/<job_id>')
@@ -326,3 +349,19 @@ def view_applications(job_id):
         job=job,
         applications=applications
     )
+
+@app.route('/my_applications')
+@login_required
+def my_applications():
+    applications = Application.objects(user=current_user)
+
+    return render_template(
+        'applications.html',
+        applications=applications,
+        job=None
+    )
+
+
+@app.route('/contact')
+def contact():
+    return render_template('contact.html')

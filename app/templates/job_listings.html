@@ -50,7 +50,7 @@ Location: {{ job.location }} | Salary: {{ job.salary }}<br>
 </a>
 
 {% if current_user.role == "job_seeker" %}
-    <form action="{{ url_for('apply_job', job_id=job.id) }}" method="POST">
+    <form action="{{ url_for('apply', job_id=job.id) }}" method="POST">
         <button type="submit">Apply</button>
     </form>
 {% endif %}

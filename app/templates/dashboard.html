@@ -8,10 +8,13 @@ Dashboard
 
 <h2>My Jobs</h2>
 
-<a href="{{ url_for('post_job') }}">Post New Job</a>
+<a class="btn btn-primary mb-3" href="{{ url_for('post_job') }}">
+    + Post New Job
+</a>
 
 <hr>
 
+<p>Total jobs: {{ jobs|length }}</p>
 {% for job in jobs %}
 
 <div class="card mb-3">

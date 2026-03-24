@@ -1,4 +1,3 @@
-from mongoengine import Document, StringField, BooleanField, EmailField, ListField, URLField, DecimalField, ReferenceField, DateTimeField, IntField
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from flask_login import UserMixin
@@ -12,7 +11,8 @@ from mongoengine import (
     DecimalField,
     ReferenceField,
     DateTimeField,
-    IntField
+    IntField,
+    FileField
 )
 
 class User(UserMixin, Document):
@@ -31,8 +31,6 @@ class User(UserMixin, Document):
     portfolio = URLField()
     courses_completed = ListField(StringField())
     reviews = ListField(StringField())
-
-    is_mentor = BooleanField(default=False)
     mentor_bio = StringField()
 
     def set_password(self, password):
@@ -55,8 +53,9 @@ class JobPost(Document):
 
 
 class Application(Document):
-    user = ReferenceField(User)
-    job = ReferenceField(JobPost)
+    user = ReferenceField(User, required=True)
+    job = ReferenceField(JobPost, required=True)
+    cv = FileField
     applied_at = DateTimeField(default=datetime.utcnow)
 
 

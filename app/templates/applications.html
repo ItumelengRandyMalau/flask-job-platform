@@ -6,32 +6,53 @@ Applications
 
 {% block content %}
 
-<h2>Applicants for: {{ job.title }}</h2>
+{% if job %}
+    <!-- EMPLOYER VIEW -->
+    <h2>Applicants for: {{ job.title }}</h2>
 
-<hr>
-
-{% if applications %}
-
-    {% for app in applications %}
-
+    {% if applications %}
         <div class="card mb-3">
             <div class="card-body">
+                <ul>
+                {% for application in applications %}
+                    <li>
+                        {{ application.user.username }}
 
-                <h5>{{ app.user.username }}</h5>
-                <p>{{ app.user.email }}</p>
+                        <p class="text-muted">
+                            Applied on {{ application.applied_at.strftime('%Y-%m-%d') }}
+                        </p>
 
-                <p class="text-muted">
-                    Applied on {{ app.applied_at.strftime('%Y-%m-%d') }}
-                </p>
-
+                        <a href="{{ url_for('view_cv', app_id=application.id) }}" class="btn btn-sm btn-primary">
+                            View CV
+                        </a>
+                    </li>
+                {% endfor %}
+                </ul>
             </div>
         </div>
-
-    {% endfor %}
+    {% else %}
+        <p>No applicants yet.</p>
+    {% endif %}
 
 {% else %}
+    <!-- JOB SEEKER VIEW -->
+    <h2>My Applications</h2>
+    <div class="card mb-3">
+        <div class="card-body">
 
-    <p>No applications yet.</p>
+        {% if applications %}
+            <ul>
+            {% for application in applications %}
+                <li>
+                    {{ application.job.title }} - {{ application.job.company }}
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% else %}
+        <p>No applications yet.</p>
+    {% endif %}
 
 {% endif %}
 

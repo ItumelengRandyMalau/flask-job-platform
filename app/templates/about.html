@@ -1,33 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/all.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
-    
-    <title>About Us - JOBHUBSA</title>
-</head>
-<body>
-    <header>
-        <a href="{{ url_for('index') }}" class="logo" style="text-decoration: none;">
-            <span>JOB<span style="color: rgb(18, 167, 167);">HUBSA</span></span>
-        </a>
-        <nav>
-            <ul>
-                <li><a href="{{ url_for('index') }}">Home</a></li>
-                <li><a href="{{ url_for('job_listings') }}">Job Listings</a></li>
-                <li><a href="{{ url_for('courses') }}">Courses</a></li>
-                <li><a href="{{ url_for('mentors') }}">Mentors</a></li>
-                <li><a href="{{ url_for('contact') }}">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
+{% extends "base.html" %}
 
-    <section class="about-section">
+{% block title %}
+About Us
+{% endblock %}
+{% block content %}
         <h1>About JOBHUBSA</h1>
         <p>
             JOBHUBSA is dedicated to connecting employers with the best entry-level talent. 
@@ -44,14 +23,4 @@
             for entry-level job seekers to find fulfilling employment while helping 
             companies find the talent they need to grow.
         </p>
-    </section>
-
-    <footer>
-        <p>&copy; 2026 JOBHUBSA. All rights reserved.</p>
-    </footer>
-
-    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-</body>
-</html>
-
+{% endblock %}
