@@ -44,7 +44,7 @@ Sign Up
 
                 <div class="form-container">
 
-                    <form method="post">
+                    <form method="post" action="{{ url_for('signup') }}">
 
                         <div class="input-cnt">
                             <i class="fas fa-user"></i>
@@ -59,6 +59,15 @@ Sign Up
                         <div class="input-cnt">
                             <i class="fas fa-user"></i>
                             <input type="text" name="username" placeholder="Username" required>
+                        </div>
+
+                         <div class="input-cnt">
+                            <i class="fas fa-user"></i>
+                            <select name="role" placeholder="User_role" required>
+                                <option value="job_seeker">Job Seeker</option>
+                                <option value="employer">Employer</option>
+                                <option value="mentor">Mentor</option>
+                            </select>
                         </div>
 
                         <div class="input-cnt">

@@ -55,7 +55,7 @@ class JobPost(Document):
 class Application(Document):
     user = ReferenceField(User, required=True)
     job = ReferenceField(JobPost, required=True)
-    cv = FileField
+    cv = FileField()
     applied_at = DateTimeField(default=datetime.utcnow)
 
 

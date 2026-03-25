@@ -26,13 +26,18 @@ def signup():
             return redirect(url_for('signup'))
 
         try:
+            role = data.get('role')
+
             user = User(
-                username=data['username'],
-                email=data['email'],
-                role="job_seeker",
-                company=data['company'],
-                location=data['location'],
-                cellphone=data['cellphone']
+            username=data.get('username'),
+            email=data.get('email'),
+            company=data.get('company'),
+            location=data.get('location'),
+            cellphone=data.get('cellphone'),
+            role=role,
+            is_employer=(role == "employer"),
+            is_job_seeker=(role == "job_seeker"),
+            is_mentor=(role == "mentor")
             )
 
             user.set_password(password)
@@ -148,12 +153,16 @@ def apply(job_id):
 @app.route('/view_cv/<app_id>')
 @login_required
 def view_cv(app_id):
-    app = Application.objects(id=app_id).first()
+    application = Application.objects(id=app_id).first()
+
+    if not application or not application.cv:
+        flash("CV not found", "danger")
+        return redirect(url_for('dashboard'))
 
     return send_file(
-        io.BytesIO(app.cv.read()),
-        download_name=app.cv.filename,
-        as_attachment=False
+        io.BytesIO(application.cv.read()),
+        download_name=application.cv.filename or "cv.pdf",
+        as_attachment=True
     )
 
 
