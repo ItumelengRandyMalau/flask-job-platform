@@ -1,14 +1,16 @@
 from flask import Flask
 from flask_login import LoginManager
 from mongoengine import connect
+import os
+from dotenv import load_dotenv
 
 app = Flask(__name__)
-app.secret_key = "supersecretkey"
+app.secret_key = os.getenv("SECRET_KEY")
 
 # MongoDB connection
 connect(
     db="jobhub_db",
-    host="mongodb+srv://itumeleng:Itumeleng1.@cluster0.3klnl.mongodb.net/"
+    host= os.getenv("MONGO_URI")
 )
 
 # Login manager
