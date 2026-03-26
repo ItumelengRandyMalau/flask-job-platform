@@ -196,12 +196,14 @@ def employer():
 
         try:
             user = User(
-                username=request.form['fullname'],
+                username=request.form['username'],
                 email=request.form['email'],
-                role="employer",
                 company=request.form['company'],
                 cellphone=request.form['cellphone'],
-                location=request.form['location']
+                location=request.form['location'],
+                role=request.form['role'],
+                is_employer=True,
+                is_job_seeker=False,
             )
 
             user.set_password(password)

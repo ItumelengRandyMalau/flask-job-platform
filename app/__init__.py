@@ -4,6 +4,7 @@ from mongoengine import connect
 import os
 from dotenv import load_dotenv
 
+load_dotenv()  # Load environment variables from .env file
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
 
@@ -29,3 +30,4 @@ def load_user(user_id):
 
 # Import routes
 from app import routes
+debug = True

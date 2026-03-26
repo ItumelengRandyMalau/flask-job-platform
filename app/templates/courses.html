@@ -1,15 +1,30 @@
-<!-- courses.html -->
 {% extends "base.html" %}
-
-{% block title %}
-Available Courses
-{% endblock %}
 
 {% block content %}
 
-<ul>
-    {% for course in courses %}
-    <li>{{ course.title }} - {{ course.duration }} hours</li>
-    {% endfor %}
-</ul>
+<h2 class="mb-4">Courses</h2>
+
+<div class="row">
+  {% for course in courses %}
+  <div class="col-md-4 mb-4">
+    <div class="card h-100 shadow-sm">
+
+      <div class="card-body">
+        <h5 class="card-title">{{ course.title }}</h5>
+        <p class="card-text">
+          {{ course.description[:120] }}...
+        </p>
+      </div>
+
+      <div class="card-footer bg-transparent border-0">
+        <a href="{{ course.link }}" target="_blank" class="btn btn-success btn-sm">
+          Start Course
+        </a>
+      </div>
+
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
 {% endblock %}

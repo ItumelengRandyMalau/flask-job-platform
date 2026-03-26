@@ -46,11 +46,9 @@
                         Entry-level hiring made easy
                       </h1>
                       <p class="sm_text">
-                        Find the best entry-level talent fast with<br> SAJOBHUB’s automated recruiting platform and integrated assessments
+                        Find the best entry-level talent fast with<br> JobHubSA’s automated recruiting platform and integrated assessments
                       </p>
-                      <button class="demo"><a href="{{url_for('employer') }}" style="text-decoration: none; color:aliceblue;">
-                        Request a demo </a>
-                      </button>
+                    
                     </div>
                     <div id="image_box" class="col-lg-6 col-md-12">
                       <!---------------------------------image---------------------------->
@@ -95,13 +93,13 @@
                       On the JOBHUBSA Platform you will also have access to free job resources to help you on your
                      application journey and make sure you are interview ready
                   </p>
-                   <div class="the_btn"><button><a href="{{ url_for('signup') }}">Find a job</a></button></div>
+                   <div class="the_btn"><button><a href="{{ url_for('job_listings') }}">Find a job</a></button></div>
                 </div>
               </div>
               <div id="Card_seeker" class="col-lg-6 col-md-12 ">
                 <!-------First card_ for job seekers___-->
                 <div class="container">
-                  <span class="top_botton"><a href="{{ url_for('employer') }}">For employers</a></span>
+                  <span class="top_botton"><a href="{{ url_for('signup') }}">For employers</a></span>
                   <div class="img_1st_container">
                     <div class="image_container">
                       <img src="{{ url_for('static', filename='images/prsn_sitting.png') }}"alt="image">
@@ -113,7 +111,7 @@
                      automates entry-level recruitment, streamlining the recruiting process
                      and ensuring better job fit candidates through built-in psychometric assessments.
                   </p>
-                   <div class="the_btn"><button style="background-color: rgb(7, 7, 37);"><a href="{{ url_for('employer') }}">Find out more</a></button></div>
+
                 </div>
               </div>
             </div>
@@ -128,33 +126,32 @@
 
 
   <!-- FOOOTER -->
-  <footer class="panel-footer">
+  <footer class="panel-footer" style="background-color: rgb(16, 16, 31); color: rgb(16, 16, 31; margin-top: 10px;">
     <div class="container">
       <div class="row">
         <section id="hours" class="col-sm-4">
-          <br>
+          <p style="font-weight: 600; font-size: large; color: black;"><i id="address" class=""></i> HOURS</p>
           Mon-fri: 10:00 - 13:00<br>
           On appointments<br>
           Only
           <hr class="visible-xs">
         </section>
         <section id="address" class="col-sm-4">
-          <span>Address:</span><br>
+          <p style="font-weight: 600; font-size: large; color: black;"><i id="address" class=""></i> ADDRESS</p>
           Gereformeerde Kerk <br>
           23 Ramothibe.<br>
           
-          <p>* jobs.</p>
           <hr class="visible-xs">
         </section>
         <section id="testimonials" class="col-sm-4">
           <p style="font-weight: 600; font-size: large;"><i id="phone" class=""></i> CONTACTS</p>
-          <p><i id="email" class="fas fa-envelope"></i> JOBHUBSA@gmail.com</p>
+          <p><i id="email" class="fas fa-envelope"></i> JobHubSA@gmail.com</p>
           <p><i id="email" class="fas fa-envelope"></i> lawrencewillie448@gmail.com</p>
-          <p><i id="phone" class="fas fa-whatsapp"></i> 079 336 5732</p>
-          </section>
+          <p><i id="phone" class="fas fa-whatsapp"></i> 060 8592 802</p>
+        </section>
           
       </div>
-      <div class="text-center">&copy;<a href="{{url_for('index') }}" style="text-decoration: none; color: rgb(49, 47, 45);" >SAJOBHUB 2024</a></div>
+      <div class="text-center">&copy;<a href="{{url_for('index') }}" style="text-decoration: none; color: rgb(49, 47, 45);" >JobHubSA 2026</a></div>
     </div>
   </footer>
 
