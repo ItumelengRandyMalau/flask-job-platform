@@ -1,73 +1,72 @@
 <!-- job_listings.html -->
-{% extends "base.html" %}
-
-{% block title %}
-Job Listings
-{% endblock %}
-
-{% block content %}
-
+{% extends "base.html" %} {% block title %} Job Listings {% endblock %} {% block
+content %}
 
 <h2>Available Jobs</h2>
 
-{% with messages = get_flashed_messages(with_categories=true) %}
-{% if messages %}
-    {% for category, message in messages %}
-        <div class="alert alert-success">
-            {{ message }}
-        </div>
-    {% endfor %}
-{% endif %}
-{% endwith %}
+{% with messages = get_flashed_messages(with_categories=true) %} {% if messages
+%} {% for category, message in messages %}
+<div class="alert alert-success">{{ message }}</div>
+{% endfor %} {% endif %} {% endwith %}
 
 <form action="/jobs" method="get">
-    <input type="text" name="location" placeholder="Filter by location">
-    <input type="text" name="category" placeholder="Filter by category">
-    <button type="submit">Search</button>
+  <input type="text" name="location" placeholder="Filter by location" />
+  <input type="text" name="category" placeholder="Filter by category" />
+  <button type="submit">Search</button>
 </form>
 
-<ul>
-{% for job in jobs %}
-<li>
+<div class="jobs-container">
+  {% for job in jobs %}
 
-  {% if job.created_at %}
-            <p class="text-muted">
-                Posted on {{ job.created_at.strftime('%d %b %Y') }}
-            </p>
+  <div class="job-card">
+    {% if job.created_at %}
+    <p class="posted-date">
+      Posted on {{ job.created_at.strftime('%d %b %Y') }}
+    </p>
     {% endif %}
-<strong>
-<a href="{{ url_for('job_detail', job_id=job.id) }}" style="text-decoration:none;">
-{{ job.title }}
-</a>
-</strong> - {{ job.company }}<br>
 
-Location: {{ job.location }} | Salary: {{ job.salary }}<br>
+    <h3>
+      <a href="{{ url_for('job_detail', job_id=job.id) }}"> {{ job.title }} </a>
+    </h3>
 
-{{ job.description }}<br>
+    <p class="company">{{ job.company }}</p>
 
-<a href="{{ url_for('job_detail', job_id=job.id) }}">
-    View Details
-</a>
+    <p><strong>Location:</strong> {{ job.location }}</p>
 
-{% if current_user.role == "job_seeker" %}
-    <form action="{{ url_for('apply', job_id=job.id) }}" method="POST">
-        <button type="submit">Apply</button>
-    </form>
-{% endif %}
+    <p><strong>Salary:</strong> {{ job.salary }}</p>
 
-</li>
-{% endfor %}
-</ul>
+    <p class="description">{{ job.description }}</p>
+
+    <!-- Card Footer -->
+    <div class="job-card-footer">
+      <a href="{{ url_for('job_detail', job_id=job.id) }}" class="view-details">
+        View Details
+      </a>
+
+      {% if current_user.role == "job_seeker" %}
+      <form action="{{ url_for('apply', job_id=job.id) }}" method="POST">
+        <button type="submit" class="apply-button">Apply</button>
+      </form>
+      {% endif %}
+    </div>
+  </div>
+
+  {% endfor %}
+</div>
 
 <div class="mt-4">
+  <a
+    href="?page={{ request.args.get('page',1)|int - 1 }}"
+    class="btn btn-secondary"
+  >
+    Previous
+  </a>
 
-<a href="?page={{ request.args.get('page',1)|int - 1 }}" class="btn btn-secondary">
-Previous
-</a>
-
-<a href="?page={{ request.args.get('page',1)|int + 1 }}" class="btn btn-secondary">
-Next
-</a>
-
+  <a
+    href="?page={{ request.args.get('page',1)|int + 1 }}"
+    class="btn btn-secondary"
+  >
+    Next
+  </a>
 </div>
 {% endblock %}
