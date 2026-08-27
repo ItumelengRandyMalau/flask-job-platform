@@ -23,76 +23,81 @@
     {% block styles %}{% endblock %}
   </head>
 
-  <body>
-    <!-- NAVBAR (ONLY place for role logic) -->
-    <nav class="navbar">
-      <div class="navbar-container">
-        <a class="navbar-brand" href="{{ url_for('index') }}"> JobHubSA </a>
+  <>
+  <!-- NAVBAR (ONLY place for role logic) -->
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a class="navbar-brand" href="{{ url_for('index') }}"> JobHubSA </a>
 
-        <!-- Hamburger button -->
-        <button class="menu-toggle" id="menuToggle">☰</button>
+      <!-- Hamburger button -->
+      <button class="menu-toggle" id="menuToggle">☰</button>
 
-        <!-- Navigation links -->
-        <div class="nav-menu" id="navMenu">
-          <a href="{{ url_for('index') }}">Home</a>
+      <!-- Navigation links -->
+      <div class="nav-menu" id="navMenu">
+        <a href="{{ url_for('index') }}">Home</a>
 
-          <a href="{{ url_for('job_listings') }}">Jobs</a>
+        <a href="{{ url_for('job_listings') }}">Jobs</a>
 
-          <a href="{{ url_for('courses') }}">Courses</a>
+        <a href="{{ url_for('courses') }}">Courses</a>
 
-          <a href="{{ url_for('mentors') }}">Mentors</a>
+        <a href="{{ url_for('mentors') }}">Mentors</a>
 
-          <a href="{{ url_for('about') }}">About</a>
+        <a href="{{ url_for('about') }}">About</a>
 
-          <a href="{{ url_for('profile') }}">Profile</a>
+        <a href="{{ url_for('profile') }}">Profile</a>
 
-          {% if current_user.is_authenticated %} {% if current_user.role ==
-          "employer" %}
+        {% if current_user.is_authenticated %} {% if current_user.role ==
+        "employer" %}
 
-          <a href="{{ url_for('dashboard') }}"> Dashboard </a>
+        <a href="{{ url_for('dashboard') }}"> Dashboard </a>
 
-          <a href="{{ url_for('post_job') }}"> Post Job </a>
+        <a href="{{ url_for('post_job') }}"> Post Job </a>
 
-          {% elif current_user.role == "job_seeker" %}
+        {% elif current_user.role == "job_seeker" %}
 
-          <a href="{{ url_for('my_applications') }}"> My Applications </a>
+        <a href="{{ url_for('my_applications') }}"> My Applications </a>
 
-          {% endif %}
+        {% endif %}
 
-          <a href="{{ url_for('logout') }}"> Logout </a>
+        <a href="{{ url_for('logout') }}"> Logout </a>
 
-          {% else %}
+        {% else %}
 
-          <a href="{{ url_for('login') }}"> Login </a>
+        <a href="{{ url_for('login') }}"> Login </a>
 
-          <a href="{{ url_for('signup') }}"> Signup </a>
+        <a href="{{ url_for('signup') }}"> Signup </a>
 
-          {% endif %}
-        </div>
+        {% endif %}
       </div>
-    </nav>
-
-    <!-- ✅ PAGE CONTENT (ALWAYS RENDERS) -->
-    <div class="container mt-4">
-      {% if request.endpoint != 'index' %}
-      <a
-        href="{{ request.referrer or url_for('index') }}"
-        class="btn btn-secondary mb-3"
-      >
-        ⬅ Back
-      </a>
-      {% endif %} {% with messages = get_flashed_messages(with_categories=true)
-      %} {% if messages %} {% for category, message in messages %}
-      <div class="alert alert-{{ category }}">{{ message }}</div>
-      {% endfor %} {% endif %} {% endwith %} {% block content %} {% endblock %}
     </div>
+  </nav>
 
-    <!-- ✅ FOOTER (always visible) -->
-    <footer class="bg-dark text-white text-center mt-5 p-3">
+  <!-- PAGE CONTENT (ALWAYS RENDERS) -->
+  <body class="site">
+    <main class="site-content">
+      <div class="container">
+        {% if request.endpoint != 'index' %}
+        <a
+          href="{{ request.referrer or url_for('index') }}"
+          class="back-button"
+        >
+          ⬅ Back
+        </a>
+        {% endif %} {% with messages =
+        get_flashed_messages(with_categories=true) %} {% if messages %} {% for
+        category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %} {% endif %} {% endwith %} {% block content %} {% endblock
+        %}
+      </div>
+    </main>
+
+    <!-- FOOTER (always visible) -->
+    <footer class="site-footer">
       <p>© 2026 JobHubSA | Connecting talent with opportunity</p>
     </footer>
 
-    <!-- ✅ GLOBAL JS (always loaded) -->
+    <!-- GLOBAL JS (always loaded) -->
     <script src="{{ url_for('static', filename='bootstrap/js/jquery.min.js') }}"></script>
     <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.js') }}"></script>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>

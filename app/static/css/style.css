@@ -938,6 +938,35 @@ section #image_box .image-container img {
 .nav-menu a:hover {
   color: #0d6efd;
 }
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+.site {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.site-content {
+  flex: 1;
+}
+
+.site-footer {
+  background-color: #212529;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+.site-footer p {
+  margin: 0;
+}
 
 /* Hamburger button */
 
