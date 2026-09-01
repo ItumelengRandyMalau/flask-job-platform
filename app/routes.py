@@ -377,4 +377,3 @@ def my_applications():
 def contact():
     return render_template('contact.html')
 
-app.run(debug=True)
