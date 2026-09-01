@@ -3,20 +3,25 @@ block content %}
 
 <!-- Hero Section -->
 <section class="hero-section">
-  <div class="hero-text">
+  <div class="hero-overlay"></div>
+
+  <div class="hero-content">
     <h1>Entry-level hiring made easy</h1>
 
     <p>
       Find the best entry-level talent fast with JobHubSA's automated recruiting
       platform and integrated assessments.
     </p>
-  </div>
 
-  <div class="hero-image">
-    <img
-      src="{{ url_for('static', filename='images/just_ima.png') }}"
-      alt="JobHubSA recruitment platform"
-    />
+    <div class="hero-buttons">
+      <a href="{{ url_for('job_listings') }}" class="hero-button primary">
+        Find a Job
+      </a>
+
+      <a href="{{ url_for('signup') }}" class="hero-button secondary">
+        Hire Talent
+      </a>
+    </div>
   </div>
 </section>
 
@@ -40,8 +45,8 @@ block content %}
 
     <div class="user-card-image">
       <img
-        src="{{ url_for('static', filename='images/prsn_laptp.png') }}"
-        alt="Job seeker using a laptop"
+        src="{{ url_for('static', filename='images/job-seekers.jpg') }}"
+        alt="Job seeker shaking hands with professionals"
       />
     </div>
 
@@ -63,8 +68,8 @@ block content %}
 
     <div class="user-card-image">
       <img
-        src="{{ url_for('static', filename='images/prsn_sitting.png') }}"
-        alt="Employer using JobHubSA"
+        src="{{ url_for('static', filename='images/employers-laptop.jpg') }}"
+        alt="Office laptop and charts on the employer table."
       />
     </div>
 

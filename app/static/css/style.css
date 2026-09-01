@@ -972,53 +972,110 @@ body {
    HOME PAGE
 ========================= */
 
+/* =========================
+   HERO SECTION
+========================= */
+
 .hero-section {
+  position: relative;
+
+  min-height: 550px;
+
+  background-image: url("https://images.openai.com/static-rsc-4/Lr0AY-SSeRLjUpDMLuZiAXoGbhUys5NPHaY_yVP1rt7vj3VzgFm0S7P1peAr6RZH5dNz2uzB0WKYLb0sTBpAkvAu1sQ6V_SQxf3Dq-mWanFnc4V8sQGOmiRrG6CDWqNB-psmgbN6px-1wBCi7ShlBrJ-787ye25iQirdxSwm2ueC91Rhf9-Utj7Ev5ddcWs_?purpose=fullsize");
+  background-size: cover;
+  background-position: center;
+
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 40px;
 
-  padding: 60px 0;
+  padding: 60px;
 }
 
-.hero-text {
-  flex: 1;
+.hero-overlay {
+  position: absolute;
+
+  inset: 0;
+
+  background-color: rgba(0, 0, 0, 0.45);
 }
 
-.hero-text h1 {
-  font-size: 48px;
-  margin-bottom: 20px;
+.hero-content {
+  position: relative;
+
+  z-index: 1;
+
+  max-width: 600px;
+
+  color: white;
 }
 
-.hero-text p {
-  font-size: 18px;
+.hero-content p {
+  font-size: 19px;
   line-height: 1.6;
-  color: #555;
+
+  margin-bottom: 30px;
+
   max-width: 550px;
 }
 
-.hero-image {
-  flex: 1;
-  text-align: center;
+.hero-buttons {
+  display: flex;
+  gap: 15px;
 }
 
-.hero-image img {
-  max-width: 100%;
-  height: auto;
+.hero-button {
+  padding: 12px 24px;
+
+  border-radius: 6px;
+
+  text-decoration: none;
+
+  font-weight: bold;
+
+  display: inline-block;
 }
+
+.hero-button.primary {
+  background-color: #12a7a7;
+  color: white;
+}
+
+.hero-button.primary:hover {
+  background-color: #0d8585;
+}
+
+.hero-button.secondary {
+  background-color: white;
+  color: #222;
+}
+
+.hero-button.secondary:hover {
+  background-color: #eeeeee;
+}
+
 @media (max-width: 768px) {
   .hero-section {
+    min-height: 500px;
+    padding: 40px 25px;
+    background-position: center;
+  }
+
+  .hero-content h1 {
+    font-size: 38px;
+  }
+
+  .hero-content p {
+    font-size: 17px;
+    color: white;
+  }
+
+  .hero-buttons {
     flex-direction: column;
-    text-align: center;
-    padding: 40px 0;
+    align-items: flex-start;
   }
 
-  .hero-text h1 {
-    font-size: 36px;
-  }
-
-  .hero-text p {
-    margin: 0 auto;
+  .hero-button {
+    width: fit-content;
   }
 
   .user-cards {
@@ -1089,14 +1146,18 @@ body {
 }
 
 .user-card-image {
-  text-align: center;
+  width: 100%;
+  height: 250px;
+  overflow: hidden;
+  border-radius: 10px;
   margin: 25px 0;
 }
 
 .user-card-image img {
-  max-width: 100%;
-  height: 220px;
-  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .user-card h3 {
