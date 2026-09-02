@@ -128,7 +128,7 @@ def apply(job_id):
     if current_user.role != "job_seeker":
         flash("Only job seekers can apply", "danger")
         return redirect(url_for('index'))
-        
+
     if request.method == 'POST':
         file = request.files.get('cv')
 
@@ -178,6 +178,9 @@ def view_cv(app_id):
 def job_detail(job_id):
 
     job = JobPost.objects(id=job_id).first()
+
+    if not job:
+        abort(404)
 
     return render_template('job_detail.html', job=job)
 
