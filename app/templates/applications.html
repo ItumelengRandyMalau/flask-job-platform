@@ -1,59 +1,68 @@
-{% extends "base.html" %}
+{% extends "base.html" %} {% block title %} Applications {% endblock %} {% block
+content %} {% if job %}
+<!-- EMPLOYER VIEW -->
+<h2>Applicants for: {{ job.title }}</h2>
 
-{% block title %}
-Applications
-{% endblock %}
+{% if applications %}
+<div class="card mb-3">
+  <div class="card-body">
+    <ul>
+      {% for application in applications %}
+      <li>
+        {{ application.user.username }}
 
-{% block content %}
+        <p class="text-muted">
+          Applied on {{ application.applied_at.strftime('%Y-%m-%d') }}
+        </p>
 
-{% if job %}
-    <!-- EMPLOYER VIEW -->
-    <h2>Applicants for: {{ job.title }}</h2>
-
-    {% if applications %}
-        <div class="card mb-3">
-            <div class="card-body">
-                <ul>
-                {% for application in applications %}
-                    <li>
-                        {{ application.user.username }}
-
-                        <p class="text-muted">
-                            Applied on {{ application.applied_at.strftime('%Y-%m-%d') }}
-                        </p>
-
-                        <a href="{{ url_for('view_cv', app_id=application.id) }}" class="btn btn-sm btn-primary">
-                            View CV
-                        </a>
-                    </li>
-                {% endfor %}
-                </ul>
-            </div>
-        </div>
-    {% else %}
-        <p>No applicants yet.</p>
-    {% endif %}
-
+        <a
+          href="{{ url_for('view_cv', app_id=application.id) }}"
+          class="btn btn-sm btn-primary"
+        >
+          View CV
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
 {% else %}
-    <!-- JOB SEEKER VIEW -->
-    <h2>My Applications</h2>
-    <div class="card mb-3">
-        <div class="card-body">
+<p>No applicants yet.</p>
+{% endif %} {% else %}
+<!-- JOB SEEKER VIEW -->
+<h2>My Applications</h2>
 
-        {% if applications %}
-            <ul>
-            {% for application in applications %}
-                <li>
-                    {{ application.job.title }} - {{ application.job.company }}
-                </li>
-            {% endfor %}
-            </ul>
-        </div>
-    </div>
+{% if applications %} {% for application in applications %}
+
+<div class="card mb-3">
+  <div class="card-body">
+    <h5>{{ application.job.title }}</h5>
+
+    <p>
+      <strong>Company:</strong>
+      {{ application.job.company }}
+    </p>
+
+    <p>
+      <strong>Applied on:</strong>
+      {{ application.applied_at.strftime('%Y-%m-%d') }}
+    </p>
+
+    {% if application.job.status == "active" %}
+    <p><strong>Status:</strong> Active</p>
     {% else %}
-        <p>No applications yet.</p>
+    <p><strong>Status:</strong> Closed</p>
     {% endif %}
 
-{% endif %}
+    <a
+      href="{{ url_for('job_detail', job_id=application.job.id) }}"
+      class="btn btn-sm btn-primary"
+    >
+      View Job
+    </a>
+  </div>
+</div>
 
-{% endblock %}
+{% endfor %} {% else %}
+<p>No applications yet.</p>
+{% endif %} {% endif %} {% endblock %}

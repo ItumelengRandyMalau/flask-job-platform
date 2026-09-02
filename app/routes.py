@@ -343,7 +343,7 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 
-@app.route()
+@app.route('/job/<job_id>/applications')
 @login_required
 def view_applications(job_id):
 
