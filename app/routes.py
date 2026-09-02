@@ -102,7 +102,7 @@ def job_listings():
     if category:
         query['category__icontains'] = category
 
-    ''' jobs = JobPost.objects(**query).order_by('-created_at')'''
+    query['status'] = 'active'
     page = int(request.args.get('page', 1))
 
     per_page = 5
@@ -117,10 +117,18 @@ def job_listings():
 def apply(job_id):
     job = JobPost.objects(id=job_id).first()
 
+    if not job:
+        flash("Job not found", "danger")
+        return redirect(url_for('job_listings'))
+
+    if job.status != "active":
+        flash("This job is no longer accepting applications.", "warning")
+        return redirect(url_for('job_listings'))
+
     if current_user.role != "job_seeker":
         flash("Only job seekers can apply", "danger")
         return redirect(url_for('index'))
-
+        
     if request.method == 'POST':
         file = request.files.get('cv')
 
@@ -318,9 +326,10 @@ def delete_job(job_id):
     if job.employer != current_user._get_current_object():
         abort(403)
 
-    job.delete()
+    job.status = "closed"
+    job.save()
 
-    flash("Job deleted successfully", "success")
+    flash("Job closed successfully", "success")
     return redirect(url_for('dashboard'))
 
 @app.route('/job_applications/<job_id>')

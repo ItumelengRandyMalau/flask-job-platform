@@ -49,6 +49,7 @@ class JobPost(Document):
     salary = DecimalField()
     employer = ReferenceField(User)
     created_at = DateTimeField(default=datetime.utcnow)
+    status = StringField(default="active")
 
 
 
