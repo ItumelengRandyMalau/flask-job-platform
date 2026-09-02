@@ -335,14 +335,7 @@ def delete_job(job_id):
     flash("Job closed successfully", "success")
     return redirect(url_for('dashboard'))
 
-@app.route('/job_applications/<job_id>')
-def job_applications(job_id):
 
-    job = JobPost.objects(id=job_id).first()
-
-    applications = Application.objects(job=job)
-
-    return render_template('applications.html', job=job, applications=applications)
 
 @app.route('/logout')
 @login_required
@@ -350,7 +343,7 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 
-@app.route('/job/<job_id>/applications')
+@app.route()
 @login_required
 def view_applications(job_id):
 
